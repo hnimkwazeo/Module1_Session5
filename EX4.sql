@@ -83,14 +83,14 @@ having sum(o.total_amount) > 10000;
 --Ý 4: JOIN
 select c.customer_name as "Tên khách hàng", oi.product_name as "Sản phẩm đã bán",
 o.order_date as "Ngày đặt hàng", oi.quantity as "Số lượng", oi.price as "Giá", oi.price * oi.quantity as "Thành tiền"
-from order_items
-join orders o oi on oi.order_id = o.order_id
+from order_items oi
+join orders o on oi.order_id = o.order_id
 join customers c on o.customer_id = c.customer_id;
 
 --Ý 5: Subquery
 select c.customer_name as "Tên khách hàng", sum(o.total_amount) as "Tổng doanh thu"
-from customers c
-join orders o on c.customer_id = o.customer_id
+from orders o
+join customers c on o.customer_id = c.customer_id
 group by c.customer_name
 having sum(o.total_amount) = (
 	select max(total_rev)
@@ -100,7 +100,6 @@ having sum(o.total_amount) = (
 		group by customer_id
 	)
 );
-
 
 --Ý 6: UNION và INTERSECT
 select city
